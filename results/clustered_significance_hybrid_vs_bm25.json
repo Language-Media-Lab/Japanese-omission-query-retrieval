@@ -1,0 +1,58 @@
+{
+  "comparison": "weighted_hybrid_vs_bm25",
+  "unit_count": 276,
+  "cluster_count": 176,
+  "cluster_key": "gold_chunk_id",
+  "primary_metric": "MRR",
+  "secondary_metrics": [
+    "R@1",
+    "R@3",
+    "R@5",
+    "R@10"
+  ],
+  "seed": 20260820,
+  "permutations": 100000,
+  "bootstrap_resamples": 100000,
+  "metrics": {
+    "MRR": {
+      "difference_hybrid_minus_bm25": 0.021361306838841965,
+      "cluster_sign_flip_two_sided_p": 0.033869661303386964,
+      "cluster_bootstrap_95ci": [
+        0.00229601135484777,
+        0.04147607348258679
+      ]
+    },
+    "R@1": {
+      "difference_hybrid_minus_bm25": 0.018115942028985508,
+      "cluster_sign_flip_two_sided_p": 0.2998870011299887,
+      "cluster_bootstrap_95ci": [
+        -0.007662835249042145,
+        0.04609929078014184
+      ]
+    },
+    "R@3": {
+      "difference_hybrid_minus_bm25": 0.028985507246376812,
+      "cluster_sign_flip_two_sided_p": 0.03827961720382796,
+      "cluster_bootstrap_95ci": [
+        0.006920415224913495,
+        0.05434782608695652
+      ]
+    },
+    "R@5": {
+      "difference_hybrid_minus_bm25": 0.018115942028985508,
+      "cluster_sign_flip_two_sided_p": 0.31233687663123366,
+      "cluster_bootstrap_95ci": [
+        -0.007380073800738007,
+        0.04666666666666667
+      ]
+    },
+    "R@10": {
+      "difference_hybrid_minus_bm25": 0.018115942028985508,
+      "cluster_sign_flip_two_sided_p": 0.12392876071239288,
+      "cluster_bootstrap_95ci": [
+        0.0,
+        0.03773584905660377
+      ]
+    }
+  }
+}

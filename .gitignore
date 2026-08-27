@@ -3,6 +3,29 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Secrets and local environment variables
+API
+.env
+.env.*
+*.key
+
+# Generated embeddings and local caches
+**/embedding_cache/
+cache/
+outputs/
+
+# Private annotation workbooks and worker data
+annotationdata/
+**/*_filled.xlsx
+**/*_mapping.xlsx
+**/annotation_batches_*/
+**/additional_annotation_*/
+
+# Intermediate provider metadata and generation logs
+**/_all_generation_log.jsonl
+**/_all_classification_log.jsonl
+*.pre_incomplete_repair.jsonl
+
 # C extensions
 *.so
 
