@@ -88,9 +88,11 @@
   ジェプカ ラファウ\textsuperscript{2}}
 \affiliations{%
   \textsuperscript{1}\,北海道大学大学院情報科学院\quad
-  \textsuperscript{2}\,北海道大学大学院情報科学研究院}
+  \textsuperscript{2}\,北海道大学大学院情報科学研究院\\
+  \textsuperscript{1}\,Graduate School of Information Science and Technology, Hokkaido University\quad
+  \textsuperscript{2}\,Faculty of Information Science and Technology, Hokkaido University}
 \contactinfo{〒060--0814 北海道札幌市北区北14条西9丁目\\
-  E-mail: \texttt{atsu.1129.mt@gmail.com}}
+  E-mail: \texttt{ihara.atsuhiro.j6@elms.hokudai.ac.jp}}
 \pdfmetaauthor{Atsuhiro Ihara, Rafal Rzepka}
 \abstracttext{%
 We investigate how information omission affects Japanese document retrieval and how retrieval and query expansion methods respond to it.
@@ -98,7 +100,7 @@ From 306 candidates based on JDocQA, human evaluation retained 276 queries cover
 We compare seven methods on retrieval of the original evidence page from a collection of 510 pages, using document-grouped validation.
 Omission reduced mean reciprocal rank (MRR) across all five methods evaluated on both original and omission queries.
 Weighted sparse--dense fusion achieved the highest MRR of 0.8460 on omission queries, compared with 0.8333 for BM25, although the difference was not statistically significant.
-For Query2doc-style expansion, increasing the weight of the remaining query terms from one to five raised MRR from 0.8158 to 0.8423 with BM25 parameters and generated text held fixed.
+For Query2doc-style expansion under a prompt that discouraged guessing proper names, numbers, and dates, increasing the weight of the remaining query terms from one to five raised MRR from 0.8158 to 0.8423 with BM25 parameters and generated text held fixed.
 Selecting retrieval methods by gold omission category did not outperform selecting a single method across categories.
 These results highlight the importance of preserving the contribution of remaining query terms in expansion and show that omission categories alone did not yield better method selection.}
 \begin{document}
@@ -241,7 +243,7 @@ JDocQA収録質問のうち，回答が文章で記述され，回答不能理�
 生成方式別の値は\ref{app:agreement}に示す．
 \section{検索手法と評価設定}
 \subsection{文書・評価指標・分割}
-JDocQAの根拠ページ1ページを1文書とし，510文書を検索対象とする．省略前の質問に付与された正解ページを，省略後の質問でも検索できるかを評価する．検索対象には，同じページや本文が完全に一致する文書の重複はない．
+JDocQAの根拠ページ1ページを1文書とし，510文書を検索対象とする．省略前の質問に付与された正解ページを，省略後の質問でも検索できるかを評価する．検索対象510文書は，文書ID，PDF名とページ番号，本文完全一致のいずれの基準でも一意であった．さらに，本文をNFKC正規化し，小文字化・空白除去した後も重複はなかった．ただし，近似した本文の不存在までは保証しない．本評価では，元質問に付与された1ページのみを正解文書として扱い，同じ内容の別文書や省略後質問の別解釈に対応する文書は再判定していない．
 
 主指標をMean Reciprocal Rank（MRR），補助指標をRecall@$k$（以下R@$k$；$k=1,3,5,10$）とする．MRRは全510文書中の正解順位の逆数を276省略質問で等重み平均する．1正解条件でのR@$k$は，正解文書が上位$k$件に含まれる質問の割合である．一つの元質問から複数の省略質問を作成しているため，元質問ごとに平均してから全体を平均する補助集計も行った．
 同じ根拠文書に対応する質問が調整用と評価用の両方に入らないよう，根拠文書単位でデータを5分割した．各分割を順に評価用とし，残りの4分割をパラメータの調整用に用いる．
@@ -255,7 +257,7 @@ BM25はNFKC正規化（全角・半角等の互換文字を統一），小文字
 RM3型は初回検索上位10文書から適合モデル\cite{lavrenko2001relevance,jaleel2004rm3}を推定し，選んだ上位bigram分布と質問の語頻度分布を補間して重み付きBM25で再検索する．
 文書の重み推定にDirichlet平滑化（$\mu=1000$）を用いる．標準的な単語単位のクエリ尤度検索によるRM3の厳密な再現ではない．
 
-Query2doc型は，省略質問からgpt-5-miniと日本語の4例を用いたプロンプト（4-shot）で疑似文書を生成し，検索語を拡張する．通常版は省略質問のみを入力し，カテゴリ条件付き版は正解の省略カテゴリ名と定義も与える．各検索条件で同じ保存済み生成文を用いた．プロンプトと生成条件の詳細は\ref{app:q2d}に示す．
+Query2doc型は，固有名詞・数値・日付を推測で補わないよう制約したgpt-5-miniの日本語4-shotプロンプトで，省略質問から疑似文書を生成し，検索語を拡張する．通常版は省略質問のみを入力し，カテゴリ条件付き版は正解の省略カテゴリ名と定義も与える．各検索条件で同じ保存済み生成文を用いた．プロンプトと生成条件の詳細は\ref{app:q2d}に示す．
 
 元の質問語が生成文に埋もれないよう，原研究\cite{wang2023query2doc}にならって質問語の重みを5倍にする．本実装は質問と疑似文書を別々にbigram化し，
 \begin{equation}
@@ -272,7 +274,7 @@ s(d)=\alpha s_{\mathrm{dense}}(d)+(1-\alpha)s_{\mathrm{BM25}}(d)
 
 \subsection{パラメータ選択と統計比較}
 検索性能は，BM25の設定値や疎密統合の混合比率などによって変わる．そこで，特定の固定値だけに比較結果が依存しないよう，主比較では各検索手法のパラメータを調整してから評価する．密検索は固定した埋め込みモデルを用いる．
-各回の調整用4分割で省略質問のMRRが最も高い設定を選び，その設定を評価用の1分割に適用する．評価用の正解情報は設定の選択に用いない．これを5回繰り返して，全質問の評価結果を集計する．省略前後の比較では，元質問にも省略質問と同じ設定を用いる．質問語の重み付けの影響を調べる補助比較では，他のパラメータと生成文を固定する．探索する値と候補数は本文の実験設定に示す．
+各回の調整用4分割で省略質問のMRRが最も高い設定を選び，その設定を評価用の1分割に適用する．評価用の正解情報は設定の選択に用いない．これを5回繰り返して，全質問の評価結果を集計する．省略前後の比較では，元質問にも省略質問と同じ設定を用いる．質問語の重み付けの影響を調べる補助比較では，他のパラメータと生成文を固定する．BM25は$k_1\in\{0.6,1.2,1.8,2.4\}$と$b\in\{0,0.25,0.5,0.75,1\}$の20候補，RM3型は補間比$\{0.25,0.5,0.75\}$と拡張bigram数$\{5,10,20\}$を組み合わせた180候補，RRFは$k\in\{10,30,60,100\}$の80候補，重み付き疎密統合は$\alpha\in\{0,0.1,\ldots,1\}$の220候補を用いた．Query2doc型は質問語の重み$n=5$を固定し，BM25の20候補を比較した．各候補範囲から，省略質問の開発側MRRが最大となる値をfoldごとに選択した．
 
 検索手法間の差は，同じ質問に対する結果を対応付けて検定する．同じ根拠文書から作られた質問の依存を考慮し，根拠文書単位で検定と95\%信頼区間の推定を行う．主比較では各検索手法とBM25のMRR差を調べ，複数の比較による偶然の有意差を抑えるためHolm補正を用いる．また，BM25に対する利得を省略前後で比較し，その利得が省略時に大きくなるかを調べる．統計処理の詳細は，根拠文書単位の分割と対応付けを含め，本文の実験設定に示した．
 \section{結果}
@@ -304,7 +306,7 @@ RRF & 0.8446 & 0.8073 & -0.0373 \\
 
 \subsection{検索改善手法の比較}
 表\ref{tab:methods}に，7種類の検索手法を同じ検索対象と評価質問で比較した結果を示す．重み付き疎密統合はMRR 0.8460で最も高く，BM25は0.8333であった．R@1はカテゴリ条件付きQuery2doc型が81.9\%で最も高く，R@3とR@5は重み付き疎密統合が最も高かった．手法によって得意な指標が異なるため，単一の手法がすべての指標で優れるわけではない．
-この結果は，省略質問では疎検索と密検索を組み合わせる方式，またはカテゴリ情報を用いたクエリ拡張が有力な候補になることを示す．ただし，本研究のデータと実装条件で得られた比較であり，手法の一般的な優劣を直接示すものではない．
+この結果は，省略質問では疎検索と密検索を組み合わせる方式が有力な候補になることを示す．カテゴリ情報を用いたクエリ拡張の結果は，推測を禁止したプロンプト条件における比較であり，Query2doc型一般の性能を直接示すものではない．
 \begin{table*}[tb]
 \centering\small
 \caption{省略質問に対する7種類の検索手法の比較．MRRは0--1，R@$k$は\%．太字は列内最高値．}\label{tab:methods}
@@ -350,12 +352,11 @@ BM25 & 0.8278 & 80.1 \\
 \includegraphics[width=\textwidth]{figures/review_20260911/rank_transitions.pdf}
 \caption{調整済みBM25に対する正解順位の改善・悪化率．順位不変は省略した．カテゴリ条件付きQuery2doc型は正解カテゴリを利用する．誤差棒は根拠文書単位の95\%クラスタ・ブートストラップ区間（多重比較未調整）．}
 \label{fig:transitions}\end{figure*}
-順位変化だけから，誤った具体化，一般語の追加，質問語の相対的寄与の低下などの原因を一つに特定することはできない．一方，拡張語によって検索意図がずれる語彙的クエリドリフトが，一部の失敗に関与した可能性はある．
-
+本研究のプロンプトは固有名詞・数値・日付の推測を禁止しているため，誤った具体化の影響は直接比較していない．順位変化だけから原因を一つに特定することはできないが，一般的な説明語の追加や残存質問語の相対的な重みの低下が，検索信号を弱めた可能性がある．
 \subsection{カテゴリ別ルーティング}
 候補はBM25，RM3型，Query2doc型2方式，重み付き疎密統合の5手法とする．外側評価foldを完全に除いた開発集合で，根拠文書単位の内側4-foldを作成した（seedは20260911に外側foldの0始まり番号を加算）．
 内側開発側だけで各手法のパラメータを選び，内側評価側の予測を集約したMRRから，全体で一つの手法，またはカテゴリごとの手法を選ぶ．
-その後，選択手法のパラメータを外側開発集合で選び直し，外側評価集合へ適用した．従って表\ref{tab:methods}の特定手法の行と，表\ref{tab:routing}の単一手法選択の行が一致する必要はない．
+その後，選択手法のパラメータを外側開発集合で選び直し，外側評価集合へ適用した．表\ref{tab:methods}の各手法の値は，その手法を固定して外側5-foldで評価した結果である．一方，表\ref{tab:routing}の単一手法選択は，内側検証で候補手法を選び，その選択処理を外側foldで評価したnested CVの集約値である．そのため，表\ref{tab:routing}の単一手法選択は表\ref{tab:methods}のいずれか1行と一致するとは限らない．
 カテゴリは正解ラベルを用いる分析条件であり，カテゴリ推定の誤りは含まない．候補集合にも正解カテゴリを入力する拡張方式が含まれる．
 
 カテゴリ別選択のMRRは0.8387で，単一手法選択の0.8422を下回った．カテゴリ情報だけでは，質問ごとに適した検索手法を安定して選べなかった．
@@ -396,11 +397,11 @@ BM25 & 0.8278 & 80.1 \\
 
 \normalsize
 \section{おわりに}
-本研究では，JDocQAを基に作成した306候補から人手評価で選別した276件の日本語省略質問を用い，510文書を対象として7種類の検索手法を比較した．省略の種類を格と意味役割の二つの観点から整理し，省略前後の検索性能，クエリ拡張の効果，省略カテゴリに基づく手法選択を調べた．
+本研究では，JDocQAを基に作成した306候補から人手評価で選別した276件の日本語省略質問を用い，510文書を対象として7種類の検索手法を比較した．省略の種類を格と意味役割の二つの観点から整理し，省略前後の検索性能，クエリ拡張の効果（推測を禁止したプロンプト条件），省略カテゴリに基づく手法選択を調べた．
 
 RQ1について，生成を伴わない5手法では，元質問から省略質問にすると平均MRRが低下した．省略によって失われる語が検索対象を特定する手掛かりになるためであり，低下幅は検索手法によって異なった．RQ2について，省略質問では重み付き疎密統合が平均MRR 0.8460で最も高く，BM25の0.8333を上回った．元質問でも疎密統合の利得が見られたため，省略に特有の優位とはいえないが，疎検索と密検索を組み合わせる方式が有力な候補となった．RQ3について，省略カテゴリ別の手法選択は，全カテゴリ共通の手法選択を上回らなかった．カテゴリだけでは，質問ごとに異なる残存語彙や文書との適合状況を捉えきれないためである．
 
-クエリ拡張では，省略後に不足した検索語を補って順位が上がる例と，追加語によって検索対象がずれて順位が下がる例の両方が見られた．同じ疑似文書を用いても，残った質問語の重み付けによって性能が変化した．したがって実務では，省略質問に対して拡張を一律に適用するより，まず疎検索と密検索を組み合わせた検索を基準とし，検索器間の不一致や上位候補のスコア差が大きい場合にだけ拡張や確認質問を検討する運用が考えられる．カテゴリラベルだけで検索手法を切り替える設計は，本研究の条件では十分でなかった．
+推測を禁止したプロンプトによるクエリ拡張では，順位が上がる例と下がる例の両方が見られた．同じ疑似文書を用いても，残った質問語の重み付けによって性能が変化した．したがって実務では，省略質問に対して拡張を一律に適用するより，まず疎検索と密検索を組み合わせた検索を基準とし，検索器間の不一致や上位候補のスコア差が大きい場合にだけ拡張や確認質問を検討する運用が考えられる．カテゴリラベルだけで検索手法を切り替える設計は，本研究の条件では十分でなかった．
 
 今後は，質問文と検索結果の特徴から情報不足や検索失敗の可能性を検知し，補完，確認質問，検索手法の切替えを選択的に行う方法を検証する必要がある．あわせて，異なる文書集合と検索器，生成条件での追試，省略後質問に対する複数の妥当な根拠文書を考慮した評価，カテゴリ以外の検索スコアや上位文書の特徴を用いた手法選択を進める．
 
