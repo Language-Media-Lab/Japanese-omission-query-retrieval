@@ -12,3 +12,4 @@ Full score recomputation requires upstream corpus data and historical embeddings
 Chapter 4 now explains the purpose of development-only parameter selection in plain language. Detailed generation settings and statistical procedures are in the appendices; duplicate appendix prefixes are corrected.
 
 - Reorganize the discussion around the three research questions, group limitations into three categories, and normalize the final section typography.
+- 2026-09-18: 本文PDFとTeXを更新。付録Cは幅広い実例表を残し、付録D以降を本文と同じ2段組みに整理。重複する監査・旧結果・詳細条件の付録を本文から整理した。
