@@ -1,5 +1,15 @@
-# Fixed experimental results
+# Revised results
 
-These JSON files are the fixed outputs used for the paper's tables, figures, and analyses. They are provided for auditing; no experiment was rerun when preparing this public repository.
+`review/experiments.json`: main results are `tuned.count`; `fixed.count_*` are supplemental fixed-parameter comparisons. `binary` is a legacy diagnostic, not the main result.
 
-Query2doc generation caches are not included because they contain unnecessary provider response identifiers. The aggregate and per-query retrieval outputs derived from those caches are included here. New API generations may differ from the recorded run.
+`review/candidate_ranks.json`: ranks for every parameter candidate, used for held-out selection and nested routing.
+
+`review/analysis.json`: cluster-aware significance, method interactions, rank transitions, and nested routing (`routing.count`).
+
+`review/verification.json`: historical independent score/annotation verification. Local source hashes and environment describe that original verification, not the adapted public scripts.
+
+`submission/`: historical results retained exclusively for comparison and reproduction assertions. They are superseded by `review/` and must not be reported as the current paper's results.
+
+Run `python scripts/verify_release.py` to independently check current saved metrics, dataset alignment, fold separation, routing metrics, and distributed file hashes without API access or source PDFs.
+
+`review/supplemental_checks.json` contains the retained quality-audit aggregates and re-tuned subset sensitivity results (supplemental, not replacements for the 276-query main results).

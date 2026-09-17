@@ -1,0 +1,111 @@
+{
+  "subset_sensitivity": {
+    "incomplete_generation_union": {
+      "n": 269,
+      "excluded_ids": [
+        "EVAL-0018",
+        "EVAL-0029",
+        "EVAL-0045",
+        "EVAL-0094",
+        "EVAL-0232",
+        "EVAL-0235",
+        "EVAL-0262"
+      ],
+      "mrr": {
+        "Dense": 0.7070868415757019,
+        "BM25": 0.8363529243645231,
+        "RM3": 0.8224117702455593,
+        "RRF": 0.8054230252421499,
+        "Hybrid": 0.8492458704444421,
+        "Query2doc": 0.8442972213751347,
+        "CategoryQuery2doc": 0.8476895909653711
+      },
+      "interpretation": "exploratory; exclusions applied to dev and test, original folds retained; no new generation"
+    },
+    "category_median3": {
+      "n": 274,
+      "excluded_ids": [
+        "EVAL-0053",
+        "EVAL-0256"
+      ],
+      "mrr": {
+        "Dense": 0.7034650642728268,
+        "BM25": 0.8321292415274899,
+        "RM3": 0.8186945387263556,
+        "RRF": 0.805910884049169,
+        "Hybrid": 0.8448942892461716,
+        "Query2doc": 0.8370069769868419,
+        "CategoryQuery2doc": 0.8435440294607625
+      },
+      "interpretation": "exploratory; exclusions applied to dev and test, original folds retained; no new generation"
+    },
+    "extra_context_examples": {
+      "n": 273,
+      "excluded_ids": [
+        "EVAL-0061",
+        "EVAL-0189",
+        "EVAL-0257"
+      ],
+      "mrr": {
+        "Dense": 0.7122548198613066,
+        "BM25": 0.8386463388500307,
+        "RM3": 0.825140204517376,
+        "RRF": 0.8120393113110858,
+        "Hybrid": 0.8511928329813965,
+        "Query2doc": 0.8435388633178987,
+        "CategoryQuery2doc": 0.8499214801181278
+      },
+      "interpretation": "exploratory; exclusions applied to dev and test, original folds retained; no new generation"
+    }
+  },
+  "quality_audit": {
+    "grammar_only_cases": 52,
+    "deletion_semantic_labels": {
+      "grammar": 68,
+      "category_review": 10,
+      "multiple": 4,
+      "span": 8,
+      "extra": 4,
+      "focus": 5,
+      "typo": 2,
+      "replacement": 3,
+      "scope": 2,
+      "meaning_preserving": 1
+    },
+    "deletion_shapes": {
+      "only_deletions": 83,
+      "includes_insert_or_replace": 2
+    },
+    "generation": {
+      "generic": {
+        "n": 276,
+        "completion": {
+          "none": 272,
+          "strong": 3,
+          "ambiguous": 1
+        },
+        "under_100": 14,
+        "over_200": 0
+      },
+      "category_conditioned": {
+        "n": 276,
+        "completion": {
+          "none": 273,
+          "ambiguous": 2,
+          "strong": 1
+        },
+        "under_100": 5,
+        "over_200": 1
+      }
+    },
+    "suspect_ids": [
+      "EVAL-0018",
+      "EVAL-0029",
+      "EVAL-0045",
+      "EVAL-0094",
+      "EVAL-0232",
+      "EVAL-0235",
+      "EVAL-0262"
+    ]
+  }
+}

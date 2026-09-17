@@ -1,109 +1,62 @@
 # Japanese Omission-Query Retrieval
 
-Dataset and evaluation code for the paper **“Systematic Evaluation of Retrieval and Query Expansion Methods for Japanese Questions with Omitted Information”** (Ihara and Rzepka, LAU Summer 2026).
+Dataset and evaluation code for Ihara and Rzepka's study of Japanese questions with omitted information (LAU 2026). This repository contains the revised evaluation and manuscript, updated 2026-09-17.
 
-## Overview
+The 276 human-evaluated queries cover three grammatical cases and four semantic-role categories. Retrieval is evaluated against 510 evidence pages from [JDocQA](https://github.com/aiishii/JDocQA). The questions and annotations are unchanged by this revision.
 
-This repository provides:
+## Current manuscript and results
 
-- 276 manually evaluated Japanese omission queries in seven categories;
-- character-bigram BM25 and dense-retrieval baselines;
-- the paper's RM3-style and Query2doc-style query-expansion implementations;
-- Reciprocal Rank Fusion and cross-fitted weighted Dense/BM25 fusion;
-- category-routing and cluster-aware significance analyses;
-- the prompts and fixed result files needed to audit the study.
+- [Latest manuscript PDF](paper/paper_lualatex_v4.pdf) and [LaTeX source](paper/paper_lualatex_v4.tex)
+- [Dataset and schema](data/README.md), [annotation procedure](docs/annotation_guidelines.md), [annotator IDs](docs/annotation_identifiers.md)
+- [Revised results](results/README.md), [experimental protocol](docs/review_20260911/experiment_protocol.md), [quality notes](docs/quality_notes.md)
+- [Generation conditions](docs/query2doc_generation_conditions.md) and [exact prompt resources](docs/prompts/)
 
-The dataset is derived from [JDocQA](https://github.com/aiishii/JDocQA). In the experiments, one evidence page assigned by JDocQA is treated as one retrieval document. The underlying PDFs and the 510-document text corpus are not redistributed here; obtain JDocQA under its terms and use the included builders.
+| Method | Main MRR |
+| --- | ---: |
+| Dense | 0.7056 |
+| BM25 | 0.8333 |
+| RM3 | 0.8200 |
+| Query2doc | 0.8382 |
+| Query2doc with gold category | 0.8447 |
+| RRF | 0.8073 |
+| Weighted sparse–dense fusion | 0.8460 |
 
-## Repository layout
+The Hybrid–BM25 difference is not statistically significant. Category-based selection (0.8387) did not outperform one-method selection (0.8422). The three research questions concern omission effects, retrieval-method performance, and category-based selection. Query weighting is a supplemental analysis within the method comparison.
 
-```text
-data/       Released 276-query evaluation dataset and schema notes
-docs/       Annotation and Query2doc condition documentation
-results/    Fixed result JSON files reported in the paper
-scripts/    Dataset builders, retrieval methods, and analyses
-```
-
-## Installation
-
-Python 3.10 or later is recommended.
+## Install and verify saved results
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+python scripts/test_review_experiments.py
+python scripts/verify_release.py
+python scripts/analyze_review_experiments.py
 ```
 
-Dense retrieval and Query2doc generation require an OpenAI API key supplied only through the environment:
+These checks and reanalysis use released ranks and do not call an API. Reanalysis writes to `outputs/review/`, leaving reference results untouched. Randomization and bootstrap use 100,000 samples.
+
+## Recompute retrieval
+
+Obtain JDocQA under its upstream terms and put annotations in `JDocQA/dataset/annotation_files/`. Build the corpus with `python scripts/build_jdocqa_510_dataset.py`. Source PDFs and the 510-page corpus are not redistributed. The full grid additionally requires cached `text-embedding-3-small` embeddings for corpus pages, original questions and omission queries in `omission_query_dataset/embedding_cache/`; these caches are not distributed. New embeddings may require API access and may not reproduce historical outputs exactly.
 
 ```bash
-export OPENAI_API_KEY="your-key"
+python scripts/run_review_experiments.py
+python scripts/analyze_review_experiments.py --input-dir outputs/review
 ```
 
-Never commit an API key. Local `.env`, `API`, key files, embedding caches, and private annotation workbooks are excluded by `.gitignore`.
+This is the main experimental entry point: shared document-grouped outer folds, parameter selection on development data, and query count weighting. It uses released pseudo-documents in `data/query2doc/` and writes to `outputs/review/`. The script checks historical baselines against `results/submission/` before saving revised results.
 
-## Prepare JDocQA
-
-Download the JDocQA annotation files according to the upstream instructions and place them under:
-
-```text
-JDocQA/dataset/annotation_files/
-```
-
-Then build the 510-document source data and corpus:
+Standalone `run_*_retrieval*.py` commands are fixed-setting utilities, not substitutes for the tuned main comparison. BM25 now counts repeated query terms. Query2doc uses separate bags with weight five, avoiding artificial boundary and `[SEP]` bigrams. For example:
 
 ```bash
-python scripts/build_jdocqa_510_dataset.py
+python scripts/run_query2doc_retrieval.py --pseudo-documents data/query2doc/generic.jsonl --method-name Query2doc --output outputs/query2doc_fixed.json
 ```
 
-The included `data/annotation_filtered_276.jsonl` contains the finalized omission-query evaluation set. See `data/README.md` for its schema and license.
+Generation is separate from retrieval. Existing generated texts were not changed or regenerated for this release. See the quality notes for the historical completion checks. Provider request IDs are omitted from public cache records; query text and generated text are unchanged.
 
-## Run the main methods
+## Changes and citation
 
-Run commands from the repository root. Use `--help` for documented parameters.
+The revision fixes query weighting, adds held-out parameter selection and nested category routing, updates annotation definitions and audit notes, and replaces the primary result references. Historical results remain in `results/submission/` and in Git history. See [release notes](docs/release_notes.md).
 
-```bash
-python scripts/run_bm25_retrieval_baseline.py
-python scripts/run_dense_retrieval_baseline.py
-python scripts/run_rm3_retrieval.py
-python scripts/run_rrf_retrieval.py
-python scripts/run_weighted_hybrid_retrieval.py
-python scripts/analyze_clustered_significance.py
-python scripts/run_oracle_routing.py
-```
-
-Generate Query2doc pseudo-documents separately so API outputs can be cached and audited:
-
-```bash
-python scripts/generate_query2doc.py --mode both
-python scripts/run_query2doc_retrieval.py \
-  --pseudo-documents outputs/query2doc/generic.jsonl \
-  --method-name BM25+Query2doc \
-  --output outputs/query2doc_retrieval_results.json
-```
-
-The recorded retrieval condition concatenates each omission query once with `[SEP]` and its pseudo-document. `[SEP]` is ordinary text under the character-bigram tokenizer, not a special token. API generations are not guaranteed to reproduce the released fixed results exactly.
-
-## Reproducibility notes
-
-- BM25 uses NFKC normalization, lowercasing, whitespace removal, and overlapping character bigrams.
-- Weighted fusion selects its Dense weight using development folds only.
-- All questions sharing a gold document remain in the same fold.
-- Significance tests use gold-document clusters.
-- `generate_query2doc.py --seed` controls retry-delay jitter only; it does not seed model generation.
-- Fixed outputs used in the paper are retained under `results/`.
-
-## Licenses
-
-- Source code: MIT License; see `LICENSE`.
-- Released derived dataset: CC BY-SA 4.0; see `DATA_LICENSE.md`.
-- JDocQA annotations remain subject to the upstream CC BY-SA 4.0 terms and citation request.
-- Underlying PDFs are not redistributed.
-
-## Citation
-
-Citation metadata is provided in `CITATION.cff`. Please also cite JDocQA when using the released derived dataset.
-
-## Contact
-
-Language Media Laboratory, Hokkaido University
+Citation metadata is in [CITATION.cff](CITATION.cff). Cite the study and JDocQA when using the derived dataset. Code is MIT licensed; the derived dataset is CC BY-SA 4.0 (see [data license](DATA_LICENSE.md)). Private worker workbooks, credentials, source PDFs and embeddings are not included.

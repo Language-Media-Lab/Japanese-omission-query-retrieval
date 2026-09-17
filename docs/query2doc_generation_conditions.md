@@ -199,3 +199,7 @@ expanded_query = omission_query + " [SEP] " + pseudo_document
 - 修復前バックアップ: `omission_query_dataset/query2doc/generic.pre_incomplete_repair.jsonl`
 - 検索実装: `run_query2doc_retrieval.py`
 - 先行研究との実装差: `docs/query_expansion_prior_work_audit.md`
+
+## Revised retrieval condition (2026-09-17)
+
+The current paper uses separate bigram bags: `5 * count(query) + count(pseudo_document)`. `[SEP]` and repetition-boundary bigrams are not included. Weight 1 is a supplemental comparison. BM25 parameters are selected using document-grouped development folds in the main comparison. See [protocol](review_20260911/experiment_protocol.md), [exact prompts](prompts/), and [quality notes](quality_notes.md).

@@ -65,13 +65,13 @@ class BM25:
     def scores(self, query_tokens: list[str]) -> list[float]:
         """Return one BM25 score per corpus document."""
         scores = [0.0] * len(self.lengths)
-        for term in set(query_tokens):
+        for term, query_frequency in Counter(query_tokens).items():
             if term not in self.idf:
                 continue
             idf = self.idf[term]
             for document_id, frequency in self.postings[term]:
                 norm = 1.0 - self.b + self.b * self.lengths[document_id] / self.average_length
-                scores[document_id] += idf * frequency * (self.k1 + 1.0) / (
+                scores[document_id] += query_frequency * idf * frequency * (self.k1 + 1.0) / (
                     frequency + self.k1 * norm
                 )
         return scores

@@ -1,0 +1,277 @@
+{
+  "independent_query_score_checks": 1104,
+  "alpha_checks": [
+    {
+      "group": "all",
+      "axis": "自然性評価",
+      "stage": "initial",
+      "n": 306,
+      "alpha": 0.5116201362655792
+    },
+    {
+      "group": "all",
+      "axis": "自然性評価",
+      "stage": "additional_before",
+      "n": 76,
+      "alpha": 0.10889192988943885
+    },
+    {
+      "group": "all",
+      "axis": "自然性評価",
+      "stage": "additional_after",
+      "n": 76,
+      "alpha": 0.21885633102442326
+    },
+    {
+      "group": "all",
+      "axis": "自然性評価",
+      "stage": "final",
+      "n": 306,
+      "alpha": 0.4920081901619566
+    },
+    {
+      "group": "all",
+      "axis": "回答可能性評価",
+      "stage": "initial",
+      "n": 306,
+      "alpha": 0.3792737089474606
+    },
+    {
+      "group": "all",
+      "axis": "回答可能性評価",
+      "stage": "additional_before",
+      "n": 76,
+      "alpha": -0.0748260298514225
+    },
+    {
+      "group": "all",
+      "axis": "回答可能性評価",
+      "stage": "additional_after",
+      "n": 76,
+      "alpha": 0.0731654554932133
+    },
+    {
+      "group": "all",
+      "axis": "回答可能性評価",
+      "stage": "final",
+      "n": 306,
+      "alpha": 0.3473947133710533
+    },
+    {
+      "group": "all",
+      "axis": "カテゴリ妥当性評価",
+      "stage": "initial",
+      "n": 186,
+      "alpha": 0.10478550343127024
+    },
+    {
+      "group": "all",
+      "axis": "カテゴリ妥当性評価",
+      "stage": "additional_before",
+      "n": 44,
+      "alpha": -0.04539002245022128
+    },
+    {
+      "group": "all",
+      "axis": "カテゴリ妥当性評価",
+      "stage": "additional_after",
+      "n": 44,
+      "alpha": 0.09695112629498825
+    },
+    {
+      "group": "all",
+      "axis": "カテゴリ妥当性評価",
+      "stage": "final",
+      "n": 186,
+      "alpha": 0.17788283038290797
+    },
+    {
+      "group": "格省略",
+      "axis": "自然性評価",
+      "stage": "initial",
+      "n": 120,
+      "alpha": 0.5107258354967869
+    },
+    {
+      "group": "格省略",
+      "axis": "自然性評価",
+      "stage": "additional_before",
+      "n": 32,
+      "alpha": 0.04885310387137498
+    },
+    {
+      "group": "格省略",
+      "axis": "自然性評価",
+      "stage": "additional_after",
+      "n": 32,
+      "alpha": 0.11705951459531205
+    },
+    {
+      "group": "格省略",
+      "axis": "自然性評価",
+      "stage": "final",
+      "n": 120,
+      "alpha": 0.4511876317471125
+    },
+    {
+      "group": "格省略",
+      "axis": "回答可能性評価",
+      "stage": "initial",
+      "n": 120,
+      "alpha": 0.3044145786659398
+    },
+    {
+      "group": "格省略",
+      "axis": "回答可能性評価",
+      "stage": "additional_before",
+      "n": 32,
+      "alpha": -0.1899580604300546
+    },
+    {
+      "group": "格省略",
+      "axis": "回答可能性評価",
+      "stage": "additional_after",
+      "n": 32,
+      "alpha": 0.008125380478896105
+    },
+    {
+      "group": "格省略",
+      "axis": "回答可能性評価",
+      "stage": "final",
+      "n": 120,
+      "alpha": 0.2846751185912708
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "自然性評価",
+      "stage": "initial",
+      "n": 186,
+      "alpha": 0.25355732394458397
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "自然性評価",
+      "stage": "additional_before",
+      "n": 44,
+      "alpha": -0.1644093741551369
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "自然性評価",
+      "stage": "additional_after",
+      "n": 44,
+      "alpha": 0.024971664698937412
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "自然性評価",
+      "stage": "final",
+      "n": 186,
+      "alpha": 0.27864477536668397
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "回答可能性評価",
+      "stage": "initial",
+      "n": 186,
+      "alpha": 0.42105127357330496
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "回答可能性評価",
+      "stage": "additional_before",
+      "n": 44,
+      "alpha": 0.018192750350008335
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "回答可能性評価",
+      "stage": "additional_after",
+      "n": 44,
+      "alpha": 0.11666716806550259
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "回答可能性評価",
+      "stage": "final",
+      "n": 186,
+      "alpha": 0.379545742515523
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "カテゴリ妥当性評価",
+      "stage": "initial",
+      "n": 186,
+      "alpha": 0.10478550343127024
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "カテゴリ妥当性評価",
+      "stage": "additional_before",
+      "n": 44,
+      "alpha": -0.04539002245022128
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "カテゴリ妥当性評価",
+      "stage": "additional_after",
+      "n": 44,
+      "alpha": 0.09695112629498825
+    },
+    {
+      "group": "4カテゴリ",
+      "axis": "カテゴリ妥当性評価",
+      "stage": "final",
+      "n": 186,
+      "alpha": 0.17788283038290797
+    }
+  ],
+  "rrf_differences_with_unified_id_tie_break": [
+    {
+      "variant": "original",
+      "eval_id": "EVAL-0287",
+      "old": 2,
+      "new": 1
+    },
+    {
+      "variant": "original",
+      "eval_id": "EVAL-0248",
+      "old": 2,
+      "new": 1
+    },
+    {
+      "variant": "original",
+      "eval_id": "EVAL-0227",
+      "old": 2,
+      "new": 1
+    },
+    {
+      "variant": "omission",
+      "eval_id": "EVAL-0248",
+      "old": 2,
+      "new": 1
+    }
+  ],
+  "submission_reproduction_checks": {
+    "BM25_original": 0,
+    "BM25_omission": 0,
+    "RM3_original": 0,
+    "RM3_omission": 0,
+    "HybridAlphaOnly_original": 0,
+    "HybridAlphaOnly_omission": 0
+  },
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.5.1",
+    "scipy": "1.18.1",
+    "krippendorff": "0.8.2",
+    "openpyxl": "3.1.5"
+  },
+  "code_sha256": {
+    "run_review_experiments.py": "5db0d40271273b0b84882a17fc6bf2d90f8fcd4730db5732c8ece393c1a4504e",
+    "analyze_review_experiments.py": "d54a11fe454b4725e0190115484624abbecca4b84b615287089a2a6810470a9b",
+    "audit_lau_reviews.py": "3820f81427e7328a9dc4bb33bd820811a9e7b8e7002782f5238aefe9441f6635",
+    "test_review_experiments.py": "226041e3a3078ccf1f5c8bdc07a23d208c8dd1bff74cbb0ed751b1e75bffe318",
+    "verify_review_results.py": "a111b0fae11b9b8c01b00dd34629b520cff8e5f95bd460f2dfd4adfc4e8633bb"
+  }
+}

@@ -9,4 +9,5 @@ authors:
     given-names: Rafal
 repository-code: "https://github.com/Language-Media-Lab/Japanese-omission-query-retrieval"
 license: MIT
-date-released: 2026-08-27
+date-released: 2026-09-17
+version: "2026.09.17"

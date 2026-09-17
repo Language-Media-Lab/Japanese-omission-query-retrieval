@@ -1,0 +1,79 @@
+{
+  "format": {
+    "type": "json_schema",
+    "name": "ambiguous_query_omission_result",
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primary_category_id",
+        "primary_reason",
+        "results"
+      ],
+      "properties": {
+        "primary_category_id": {
+          "type": "string",
+          "enum": [
+            "person_org",
+            "time",
+            "location",
+            "what",
+            "none"
+          ]
+        },
+        "primary_reason": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "results": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "category_id",
+              "status",
+              "ambiguous_question",
+              "omitted_information",
+              "reason"
+            ],
+            "properties": {
+              "category_id": {
+                "type": "string",
+                "enum": [
+                  "person_org",
+                  "time",
+                  "location",
+                  "what"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ok",
+                  "impossible"
+                ]
+              },
+              "ambiguous_question": {
+                "type": "string",
+                "maxLength": 500
+              },
+              "omitted_information": {
+                "type": "string",
+                "maxLength": 300
+              },
+              "reason": {
+                "type": "string",
+                "maxLength": 300
+              }
+            }
+          }
+        }
+      }
+    },
+    "strict": true
+  },
+  "verbosity": "low"
+}

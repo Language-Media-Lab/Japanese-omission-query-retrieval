@@ -1,0 +1,12 @@
+# latexmk config for the LuaLaTeX (Overleaf) version: template_overleaf.tex
+#
+# Local use:   latexmk -r latexmkrc-lualatex template_overleaf.tex
+#   (or rename this file to "latexmkrc", replacing the pLaTeX one).
+#
+# On Overleaf this file is NOT needed -- just set Compiler -> LuaLaTeX and
+# do NOT upload the pLaTeX "latexmkrc".
+
+$pdf_mode   = 4;     # 4 = LuaLaTeX
+$lualatex   = 'lualatex -halt-on-error -interaction=nonstopmode -synctex=1 %O %S';
+$bibtex     = 'bibtex %O %S';
+$max_repeat = 5;
