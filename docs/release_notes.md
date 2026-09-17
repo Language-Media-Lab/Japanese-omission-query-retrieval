@@ -10,3 +10,5 @@
 Full score recomputation requires upstream corpus data and historical embeddings. Released ranks support API-free result checking and statistical reanalysis. The machine-assisted quality audit is distinguished from the original human annotations. No new API generation was performed.
 
 Chapter 4 now explains the purpose of development-only parameter selection in plain language. Detailed generation settings and statistical procedures are in the appendices; duplicate appendix prefixes are corrected.
+
+- Reorganize the discussion around the three research questions, group limitations into three categories, and normalize the final section typography.
